@@ -58,23 +58,29 @@ trait Shipping
 
         $shippingAddress = new Address($shippingClass);
 
-        $shippingAddress->withParameters(
-            current($shipping->address->street),
-            current($shipping->address->number),
-            current($shipping->address->district),
-            current($shipping->address->postalCode),
-            current($shipping->address->city),
-            current($shipping->address->state),
-            current($shipping->address->country), 
-            current($shipping->address->complement)
-        );
+        if (isset($shipping->address)) {
+            $shippingAddress->withParameters(
+                current($shipping->address->street),
+                current($shipping->address->number),
+                current($shipping->address->district),
+                current($shipping->address->postalCode),
+                current($shipping->address->city),
+                current($shipping->address->state),
+                current($shipping->address->country), 
+                current($shipping->address->complement)
+            );
+        }
 
         $shippingType = new Type($shippingClass);
-        $shippingType->withParameters(current($shipping->type));
+        if (isset($shipping->type)) {
+            $shippingType->withParameters(current($shipping->type));
+        }
 
         $shippingCost = new Cost($shippingClass);
-        $shippingCost->withParameters(current($shipping->cost));
-
+        if (isset($shipping->cost)) {
+            $shippingCost->withParameters(current($shipping->cost));
+        }
+        
         $this->shipping = $shippingClass;
         return $this;
     }
